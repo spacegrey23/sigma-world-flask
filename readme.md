@@ -16,20 +16,28 @@ Postępuj zgodnie z poniższymi krokami.
 1.  Umieść wszystkie pliki gry w jednym folderze, np. `C:\Users\TwojaNazwa\Desktop\sigma-world-flask`.
 2.  Otwórz **Wiersz Polecenia (CMD)**. Możesz go znaleźć, wpisując "cmd" w menu Start.
 3.  W czarnym oknie Wiersza Polecenia przejdź do folderu z grą, wpisując komendę `cd` i ścieżkę do folderu, np.:
-    ``` cd C:\Users\TwojaNazwa\Desktop\sigma-world-flask ```
+    ```pytthon
+    cd C:\Users\TwojaNazwa\Desktop\sigma-world-flask
+    ```
     i naciśnij Enter.
 
 ### Krok 3: Instalacja Wymaganych Bibliotek
 
 Będąc w folderze projektu w Wierszu Polecenia, wpisz po kolei poniższe komendy, naciskając Enter po każdej z nich:
 
-1.  ``` python -m venv venv ```
+```python
+python -m venv venv
+   ```
     *(Tworzy to "wirtualne środowisko", czyli czystą przestrzeń dla naszego projektu)*
 
-3.  ``` venv\Scripts\activate ```
+```python
+   venv\Scripts\activate
+```
     *(Aktywuje to środowisko. Na początku wiersza powinna pojawić się nazwa `(venv)`)*
 
-4.  ``` pip install -r requirements.txt ```
+```python
+pip install -r requirements.txt
+```
     *(Instaluje to wszystkie biblioteki z pliku `requirements.txt` - Flask, SocketIO i Eventlet)*
 
 Te trzy komendy wykonujesz **tylko raz**.
@@ -39,8 +47,14 @@ Te trzy komendy wykonujesz **tylko raz**.
 Za każdym razem, gdy chcesz uruchomić grę, wykonaj poniższe kroki:
 
 1.  Otwórz Wiersz Polecenia i przejdź do folderu z grą (jak w Kroku 2).
-2.  Aktywuj środowisko komendą: ``` venv\Scripts\activate ```
-3.  Uruchom serwer komendą: ``` python app.py ```
+2.  Aktywuj środowisko komendą: 
+```python
+   venv\Scripts\activate
+```
+3.  Uruchom serwer komendą:
+```python
+   python app.py
+```
 
 Jeśli wszystko poszło dobrze, zobaczysz tekst informujący, że serwer działa, np. `Server initialized for eventlet...` oraz `Listening on http://127.0.0.1:5000`. **Nie zamykaj tego okna!** Serwer musi być cały czas włączony.
 
