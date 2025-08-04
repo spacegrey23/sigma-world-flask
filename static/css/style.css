@@ -1,0 +1,204 @@
+/* ================================================================== */
+/* == SIGMA WORLD - Arkusz Stylów - Wersja z efektem szkła na BTN  == */
+/* ================================================================== */
+
+/* --- Globalne Ustawienia i Zmienne --- */
+:root {
+    --bg-color: #111111;
+    --primary-text-color: #f0f0f0;
+    --secondary-text-color: #a0a0a0;
+    --accent-color: #D95B00;
+    --accent-color-light: #F57C00; /* NOWA ZMIENNA: Jaśniejszy odcień pomarańczu dla gradientu */
+    --accent-glow: rgba(217, 91, 0, 0.5);
+    --glass-bg: rgba(35, 35, 35, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --font-family: 'Prompt', sans-serif;
+    --border-radius: 20px;
+    --blur-effect: backdrop-filter: blur(24px) saturate(150%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+/* --- Główny Układ Aplikacji --- */
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+    position: relative;
+    background-color: var(--bg-color);
+    background-image: url('/static/img/background.jpg'); 
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    color: var(--primary-text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+.screen {
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- Podstawowe Komponenty UI --- */
+.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    -webkit-backdrop-filter: var(--blur-effect);
+    backdrop-filter: var(--blur-effect);
+    padding: 25px;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ZMIANA: Dodanie gradientu i ramki do przycisków */
+.button {
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    /* Zastosowanie gradientu zamiast jednolitego koloru */
+    background: linear-gradient(to bottom, var(--accent-color-light), var(--accent-color));
+    /* Dodanie subtelnej ramki dla efektu 3D */
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 999px; 
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2); /* Lekki cień pod tekstem dla czytelności */
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.button:hover, .button:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px var(--accent-glow);
+    filter: brightness(1.1); /* Lekkie rozjaśnienie po najechaniu */
+}
+
+.button:disabled {
+    background: #555;
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
+    filter: none;
+    border-color: transparent;
+}
+
+.input-field {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    color: var(--primary-text-color);
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* --- Style Ekranów --- */
+.logo-svg {
+    width: 80%;
+    max-width: 250px;
+    height: auto;
+    margin: 0 auto 20px auto;
+}
+
+h1 { font-size: 32px; font-weight: 600; margin-bottom: 20px; color: var(--secondary-text-color); }
+h2 { font-size: 28px; font-weight: 600; text-align: center; margin-bottom: 10px; }
+.player-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; width: 100%; }
+.player-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 15px; text-align: center; font-weight: 500; }
+.player-card .status { font-size: 12px; font-weight: 400; color: var(--secondary-text-color); margin-top: 5px; }
+.player-card .status.finished { color: #34c759; font-weight: 600; }
+.game-code-container { text-align: center; }
+.game-code-container p { color: var(--secondary-text-color); margin-bottom: 5px; }
+#game-code { font-size: 24px; font-weight: 600; background-color: rgba(0, 0, 0, 0.2); padding: 10px 15px; border-radius: 10px; cursor: pointer; user-select: all; }
+.judge-selector, .settings-section { width: 100%; }
+.judge-selector { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--glass-border); }
+.judge-selector label, .settings-section label { display: block; margin-bottom: 10px; font-weight: 500; }
+.judge-selector select { width: 100%; }
+
+/* --- Style dla suwaka --- */
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: rgba(0, 0, 0, 0.3); border-radius: 5px; outline: none; padding: 0; margin: 10px 0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; background: var(--accent-color); cursor: pointer; border-radius: 50%; border: 3px solid var(--bg-color); box-shadow: 0 0 10px var(--accent-glow); }
+input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; background: var(--accent-color); cursor: pointer; border-radius: 50%; border: 3px solid var(--bg-color); box-shadow: 0 0 10px var(--accent-glow); }
+
+/* --- Style dla kafelków kategorii --- */
+.category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; font-size: 14px; }
+.category-toggle { background: var(--glass-bg); border: 1px solid var(--glass-border); -webkit-backdrop-filter: var(--blur-effect); backdrop-filter: var(--blur-effect); padding: 15px; cursor: pointer; user-select: none; text-align: center; font-weight: 500; transition: all 0.2s ease-in-out; border-radius: 999px; }
+.category-toggle:hover { transform: scale(1.03); border-color: var(--accent-color); }
+.category-toggle input[type="checkbox"] { display: none; }
+.category-toggle:has(input:checked) { background: rgba(217, 91, 0, 0.3); border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-glow); color: var(--primary-text-color); }
+
+/* --- Style Ekranu Gry --- */
+#game-screen-content { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 20px; height: 100%; }
+.game-header { text-align: center; padding: 15px; border-radius: var(--border-radius); background: var(--glass-bg); border: 1px solid var(--glass-border); }
+.game-header p { font-size: 18px; color: var(--secondary-text-color); }
+.game-header .letter { font-size: 80px; font-weight: 700; line-height: 1; }
+.countdown-timer { display: none; margin: 15px auto 0; padding: 8px 15px; font-size: 20px; font-weight: 600; color: var(--accent-color); background-color: rgba(217, 91, 0, 0.1); border: 1px solid var(--accent-color); border-radius: 12px; text-align: center; min-width: 150px; }
+.categories-container { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 10px; width: 100%; }
+.category-input-panel { display: flex; flex-direction: column; gap: 8px; background: transparent; border: none; padding: 0; }
+.category-input-panel label { font-weight: 500; color: var(--secondary-text-color); margin-left: 15px; margin-bottom: -2px; }
+
+/* --- Style Modalu Wyników --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 100; animation: fadeIn 0.3s; }
+.modal-overlay .glass-panel { max-height: 80vh; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.close-btn { font-size: 24px; font-weight: 300; cursor: pointer; background: none; border: none; color: var(--primary-text-color); }
+.result-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 5px; border-bottom: 1px solid var(--glass-border); }
+.result-row:last-child { border-bottom: none; }
+.result-points { font-weight: 600; padding: 4px 8px; border-radius: 8px; font-size: 14px; white-space: nowrap; }
+.reason-jedyna { color: #ffd60a; background-color: rgba(255, 214, 10, 0.1); } 
+.reason-unikalna { color: #34c759; background-color: rgba(52, 199, 89, 0.1); } 
+.reason-powtorzona { color: var(--accent-color); background-color: rgba(217, 91, 0, 0.1); }
+.reason-zla, .reason-odrzucona { color: #ff3b30; background-color: rgba(255, 59, 48, 0.1); }
+.reason-brak { color: var(--secondary-text-color); }
+
+/* --- Responsywność --- */
+@media (max-width: 768px) {
+    .glass-panel { padding: 20px; }
+    .category-grid { grid-template-columns: 1fr; }
+}

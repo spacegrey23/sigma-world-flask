@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: sigma-world-docker
+    env: docker
+    plan: free
+    healthCheckPath: /
+    http:
+      port: 5000

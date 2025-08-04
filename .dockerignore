@@ -1,0 +1,25 @@
+# Środowisko wirtualne
+venv
+.venv
+
+# Cache Pythona
+__pycache__
+*.pyc
+
+# Pliki systemowe
+.DS_Store
+
+# Pliki konfiguracyjne IDE
+.vscode
+.idea
+
+# Plik konfiguracyjny Render (nie jest potrzebny wewnątrz kontenera)
+render.yaml
+
+# Pliki Git
+.git
+.gitignore
+.dockerignore
+
+# Dokumentacja
+readme.md
