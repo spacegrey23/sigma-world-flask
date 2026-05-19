@@ -178,6 +178,7 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; background: v
 .game-header { text-align: center; padding: 15px; border-radius: var(--border-radius); background: var(--glass-bg); border: 1px solid var(--glass-border); }
 .game-header p { font-size: 18px; color: var(--secondary-text-color); }
 .game-header .letter { font-size: 80px; font-weight: 700; line-height: 1; }
+.round-timer { display: block; margin: 10px auto 0; padding: 8px 15px; font-size: 16px; font-weight: 600; color: var(--primary-text-color); background-color: rgba(255, 255, 255, 0.1); border: 1px solid var(--glass-border); border-radius: 12px; text-align: center; min-width: 150px; }
 .countdown-timer { display: none; margin: 15px auto 0; padding: 8px 15px; font-size: 20px; font-weight: 600; color: var(--accent-color); background-color: rgba(217, 91, 0, 0.1); border: 1px solid var(--accent-color); border-radius: 12px; text-align: center; min-width: 150px; }
 .categories-container { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 10px; width: 100%; }
 .category-input-panel { display: flex; flex-direction: column; gap: 8px; background: transparent; border: none; padding: 0; }
