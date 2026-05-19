@@ -21,5 +21,5 @@ COPY . .
 EXPOSE 5000
 
 # Krok 7: Zdefiniuj komendę, która uruchomi aplikację, gdy kontener wystartuje
-# Używamy Gunicorna z workerem eventlet, tak jak poprzednio
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--worker-class", "eventlet", "-w", "1", "app:app"]
+# Używamy Gunicorna z workerem threading (bez eventlet)
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--worker-class", "sync", "-w", "1", "app:app"]

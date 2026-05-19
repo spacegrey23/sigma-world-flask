@@ -3,6 +3,8 @@
 // ==================================================================
 
 // --- Stałe i Stan Globalny ---
+// Uwaga: ALL_CATEGORIES jest teraz synchronizowane z backendem (app.py)
+// Wartości są duplikowane dla wydajności po stronie klienta
 const ALL_CATEGORIES = {
     fixed: ['Państwo', 'Miasto', 'Roślina', 'Zwierzę', 'Imię', 'Rzecz', 'Zawód'],
     optional: [
@@ -12,10 +14,11 @@ const ALL_CATEGORIES = {
         'Marka odzieżowa', 'Potrawa/Danie', 'Przymiotnik', 'Rzeczownik', 'Czasownik'
     ]
 };
+const MAX_NICK_LENGTH = 15;
 let localPlayer = { id: null, nick: '' };
 let gameState = {};
 let countdownInterval = null;
-let roundTimerInterval = null; // Zmienna dla nowego, globalnego licznika
+let roundTimerInterval = null;
 
 const app = document.getElementById('app');
 const socket = io();
@@ -268,8 +271,8 @@ function renderResultsModal(detailedResults) {
     let resultsHTML = '';
     
     const reasonClasses = {
-        'jedyna poprawna': 'reason-jedyna',
-        'unikalna': 'reason-unikalna',
+        'jedyna poprawna (+20)': 'reason-jedyna',
+        'unikalna (+10)': 'reason-unikalna',
         'powtórzona': 'reason-powtorzona',
         'zła litera': 'reason-zla',
         'odrzucona': 'reason-odrzucona',
@@ -279,7 +282,15 @@ function renderResultsModal(detailedResults) {
     for (const category in detailedResults) {
         resultsHTML += `<div class="category-input-panel"><h4>${category}</h4>`;
         detailedResults[category].forEach(res => {
-            const reasonClass = reasonClasses[res.reason.toLowerCase()] || 'reason-brak';
+            // Znajdź klasę na podstawie początku tekstu powodu
+            let reasonClass = 'reason-brak';
+            const reasonLower = res.reason.toLowerCase();
+            if (reasonLower.includes('jedyna')) reasonClass = 'reason-jedyna';
+            else if (reasonLower.includes('unikalna')) reasonClass = 'reason-unikalna';
+            else if (reasonLower.includes('powtórzona')) reasonClass = 'reason-powtorzona';
+            else if (reasonLower.includes('zła')) reasonClass = 'reason-zla';
+            else if (reasonLower.includes('odrzucona')) reasonClass = 'reason-odrzucona';
+            
             resultsHTML += `
                 <div class="result-row">
                     <span><strong>${res.nick}:</strong> ${res.answer || '---'}</span>
@@ -366,13 +377,13 @@ function clearAllTimers() {
 }
 
 function handleCreateGame() {
-    const nick = document.getElementById('nick-input').value.trim();
+    const nick = document.getElementById('nick-input').value.trim().slice(0, MAX_NICK_LENGTH);
     if (!nick) return alert('Musisz podać swój nick!');
     localPlayer.nick = nick;
     socket.emit('create_game', { nick });
 }
 function handleJoinGame() {
-    const nick = document.getElementById('nick-input').value.trim();
+    const nick = document.getElementById('nick-input').value.trim().slice(0, MAX_NICK_LENGTH);
     const roomCode = document.getElementById('join-code-input').value.trim().toUpperCase();
     if (!nick || !roomCode) return alert('Musisz podać nick i kod gry!');
     localPlayer.nick = nick;
