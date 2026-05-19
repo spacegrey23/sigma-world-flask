@@ -1,77 +1,100 @@
-# SIGMA WORLD (Wersja Serwerowa) - Instrukcja Instalacji i Uruchomienia
+# 🎮 SIGMA WORLD - Cyfrowa wersja gry "Państwa-Miasta"
 
-Ta wersja gry używa serwera napisanego w języku Python, co zapewnia jej stabilność i niezawodność. Aby ją uruchomić, należy jednorazowo skonfigurować środowisko na komputerze, który będzie pełnił rolę serwera (np. na Twoim laptopie Alienware).
+Aplikacja internetowa do gry wieloosobowej w czasie rzeczywistym. Gracze wpisują słowa zaczynające się na daną literę w różnych kategoriach.
 
-Postępuj zgodnie z poniższymi krokami.
+## 🚀 Szybki Start - Deployment Online
 
-### Krok 1: Instalacja Pythona
+Aplikacja jest przygotowana do deploymentu na platformie **Render.com** z bazą danych **Supabase**.
 
-1.  Pobierz instalator Pythona ze strony: **[https://www.python.org/downloads/](https://www.python.org/downloads/)**
-2.  Uruchom pobrany plik.
-3.  **BARDZO WAŻNE:** W pierwszym oknie instalatora zaznacz na samym dole pole **"Add Python to PATH"**.
-4.  Następnie kliknij **"Install Now"** i poczekaj na zakończenie instalacji.
+### Pełna instrukcja krok po kroku:
 
-### Krok 2: Przygotowanie Projektu
+👉 **[Zobacz DEPLOYMENT.md](DEPLOYMENT.md)**
 
-1.  Umieść wszystkie pliki gry w jednym folderze, np. `C:\Users\TwojaNazwa\Desktop\sigma-world-flask`.
-2.  Otwórz **Wiersz Polecenia (CMD)**. Możesz go znaleźć, wpisując "cmd" w menu Start.
-3.  W czarnym oknie Wiersza Polecenia przejdź do folderu z grą, wpisując komendę `cd` i ścieżkę do folderu, np.:
+### Podsumowanie w 3 krokach:
 
-    ```pytthon
-    cd C:\Users\TwojaNazwa\Desktop\sigma-world-flask
-    ```
+1. **Stwórz bazę danych w Supabase** (darmowe)
+2. **Wypchnij kod na GitHub**
+3. **Zdeployuj na Render.com** podłączając repozytorium i zmienne środowiskowe
 
-     i naciśnij Enter.
+Po deploymentzie aplikacja będzie dostępna pod adresem typu `https://sigma-world.onrender.com` - możesz grać ze znajomymi z dowolnego miejsca!
 
-### Krok 3: Instalacja Wymaganych Bibliotek
+---
 
-Będąc w folderze projektu w Wierszu Polecenia, wpisz po kolei poniższe komendy, naciskając Enter po każdej z nich:
+## 🛠️ Uruchomienie Lokalne (dla deweloperów)
 
-```python
+Jeśli chcesz uruchomić aplikację lokalnie w celach testowych:
+
+### Wymagania
+- Python 3.8+
+- pip
+
+### Instalacja
+
+```bash
+# Sklonuj repozytorium
+git clone <URL_TWOJEGO_REPOZYTORIUM>
+cd sigma-world
+
+# Utwórz wirtualne środowisko
 python -m venv venv
 
- ```
-*(Tworzy to "wirtualne środowisko", czyli czystą przestrzeń dla naszego projektu)*
+# Aktywuj środowisko
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
 
-```python
-   venv\Scripts\activate
-```
-
- *(Aktywuje to środowisko. Na początku wiersza powinna pojawić się nazwa `(venv)`)*
-
-```python
+# Zainstaluj zależności
 pip install -r requirements.txt
 ```
 
-*(Instaluje to wszystkie biblioteki z pliku `requirements.txt` - Flask, SocketIO i Eventlet)*
+### Uruchomienie
 
-Te trzy komendy wykonujesz **tylko raz**.
+```bash
+# Opcjonalnie: utwórz plik .env z konfiguracją
+cp .env.example .env
 
-### Krok 4: Uruchomienie Serwera Gry
-
-Za każdym razem, gdy chcesz uruchomić grę, wykonaj poniższe kroki:
-
-1.  Otwórz Wiersz Polecenia i przejdź do folderu z grą (jak w Kroku 2).
-2.  Aktywuj środowisko komendą: 
-
-```python
-   venv\Scripts\activate
+# Uruchom serwer
+python app.py
 ```
 
-3.  Uruchom serwer komendą:
+Aplikacja będzie dostępna pod `http://127.0.0.1:5000`
 
-```python
-   python app.py
-```
+---
 
-Jeśli wszystko poszło dobrze, zobaczysz tekst informujący, że serwer działa, np. `Server initialized for eventlet...` oraz `Listening on http://127.0.0.1:5000`. **Nie zamykaj tego okna!** Serwer musi być cały czas włączony.
+## ⚙️ Zmienne Środowiskowe
 
-### Krok 5: Jak Dołączyć do Gry
+| Nazwa | Opis | Przykład |
+|-------|------|----------|
+| `SECRET_KEY` | Klucz sesji Flask | `wylosuj-dowolny-ciag` |
+| `DATABASE_URL` | URL bazy PostgreSQL (Supabase) | `postgresql://user:pass@host:5432/db` |
+| `REDIS_URL` | URL Redis (opcjonalne) | `redis://localhost:6379` |
 
-1.  **Ty (na komputerze z serwerem):** Otwórz przeglądarkę i wejdź na adres `http://127.0.0.1:5000` lub `http://localhost:5000`.
-2.  **Inni gracze (na telefonach):**
-    * Muszą być podłączeni do **tej samej sieci WiFi** co Twój komputer.
-    * Muszą poznać **lokalny adres IP Twojego komputera**. Aby go znaleźć, otwórz **nowy** Wiersz Polecenia i wpisz `ipconfig`. Znajdź sekcję "Wireless LAN adapter Wi-Fi" i poszukaj adresu przy "IPv4 Address" (np. `192.168.1.15`).
-    * W przeglądarkach na swoich telefonach muszą wpisać ten adres wraz z portem, np. `http://192.168.1.4:5000`.
+---
 
-Gra jest gotowa!
+## 📋 Funkcje
+
+- ✅ Gra wieloosobowa w czasie rzeczywistym (WebSocket)
+- ✅ System punktacji za unikalne odpowiedzi
+- ✅ Losowanie liter (bez X, Y i polskich znaków)
+- ✅ Konfigurowalne kategorie
+- ✅ Timer rundy i odliczanie
+- ✅ Responsywny design (mobile-friendly)
+- ✅ Tryb jasny/ciemny
+- ✅ Trwała baza danych (PostgreSQL)
+
+---
+
+## 🏗️ Architektura
+
+- **Backend**: Python + Flask + Flask-SocketIO
+- **Baza danych**: PostgreSQL (Supabase) / SQLite (lokalnie)
+- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
+- **Serwer**: Gunicorn + Eventlet
+- **Hosting**: Render.com
+
+---
+
+## 📄 Licencja
+
+Projekt stworzony do użytku prywatnego ze znajomymi.

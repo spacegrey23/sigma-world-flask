@@ -9,17 +9,27 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 import json
 
+# --- Konfiguracja logowania
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 # --- Konfiguracja Aplikacji ---
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'sigma-world-final-refactored-key')
 
-# Konfiguracja bazy danych SQLite (domyślnie) lub innej z zmiennej środowiskowej
-DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///sigma_world.db')
+# Konfiguracja bazy danych - wymuszenie PostgreSQL dla produkcji (Supabase)
+# Lokalnie może działać SQLite, ale na serwerze musi być Postgres
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if not DATABASE_URL:
+    # Fallback tylko do celów lokalnych, jeśli nie ustawiono zmiennej
+    DATABASE_URL = 'sqlite:///sigma_world.db'
+    logger.warning("Używam lokalnej bazy SQLite. Do produkcji ustaw zmienną DATABASE_URL (PostgreSQL).")
+
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Konfiguracja Redis (opcjonalna, do skalowania i cache'owania)
+# Konfiguracja Redis (opcjonalna, do skalowania - na razie wyłączona dla prostoty)
 REDIS_URL = os.environ.get('REDIS_URL', None)
 redis_client = None
 if REDIS_URL:
@@ -29,15 +39,9 @@ if REDIS_URL:
     except Exception as e:
         logger.warning(f"Nie udało się połączyć z Redis: {e}")
 
-# Inicjalizacja SocketIO z wsparciem dla Redis (jeśli dostępny)
-if redis_client:
-    socketio = SocketIO(app, cors_allowed_origins="*", ping_timeout=60, ping_interval=25, async_mode='threading', message_queue='redis://')
-else:
-    socketio = SocketIO(app, cors_allowed_origins="*", ping_timeout=60, ping_interval=25, async_mode='threading')
-
-# Konfiguracja logowania
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+# Inicjalizacja SocketIO
+# async_mode='threading' jest bezpieczniejszy dla Render/Heroku niż eventlet/gevent
+socketio = SocketIO(app, cors_allowed_origins="*", ping_timeout=60, ping_interval=25, async_mode='threading', message_queue=None)
 
 random.seed()
 
